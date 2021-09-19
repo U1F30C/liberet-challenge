@@ -1,0 +1,97 @@
+import Head from "next/head";
+import React from "react";
+import { Container, Row, Card, Button } from "react-bootstrap";
+import { Service } from "../../models/service";
+import { servicesService } from "../../services/services.service";
+import { walletService } from "../../services/wallet-service";
+
+export default class ServicesList extends React.Component<
+  null,
+  { services: Service[]; credits: string }
+> {
+  constructor(props) {
+    super(props);
+    this.state = { services: [], credits: "0" };
+  }
+  async fetchData() {
+    const services = await servicesService.getAllServices();
+    const credits = await walletService.getCredits();
+    this.setState({ services, credits });
+  }
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  async doAction(service: Service) {
+    const isConsumable = service.serviceType == "Immediate";
+    if (isConsumable) {
+      await servicesService
+        .useService(service.id)
+        .catch(() => console.log("No hay suficientes créditos"));
+    } else {
+      const isStartable = !service.activeServices[0];
+      if (isStartable) {
+        await servicesService.startService(service.id);
+      } else {
+        await servicesService.stopService(service.id);
+      }
+    }
+    this.fetchData();
+  }
+  render() {
+    return (
+      <Container className="md-container">
+        <Container>
+          <h1>Servicios</h1>
+          <h2>Créditos:{this.state.credits}</h2>
+          <Container>
+            <Row className="justify-content-md-between">
+              {this.state.services.map((service) => {
+                const isConsumable = service.serviceType == "Immediate";
+
+                const isStartable = !service.activeServices[0];
+                const isPayable = service.cost <= this.state.credits;
+
+                return (
+                  <>
+                    <Card className="sml-card">
+                      <Card.Body>
+                        <Card.Title>{service.name}</Card.Title>
+                        <Card.Text>
+                          Costo: {service.cost}{" "}
+                          {isConsumable ? "" : " por minuto"}
+                        </Card.Text>
+                        <Button
+                          variant="primary"
+                          onClick={() => this.doAction(service)}
+                          disabled={isConsumable && !isPayable}
+                        >
+                          {isConsumable
+                            ? "Usar servicio"
+                            : isStartable
+                            ? "Activar servicio"
+                            : "Detener servicio"}
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </>
+                );
+              })}
+            </Row>
+          </Container>
+        </Container>
+
+        <footer className="cntr-footer">
+          <a
+            href="https://vercel.com?filter=next.js&utm_source=github&utm_medium=example&utm_campaign=next-example"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by{" "}
+            <img src="/vercel.svg" alt="Vercel Logo" className="sml-logo" />
+          </a>
+        </footer>
+      </Container>
+    );
+  }
+}
