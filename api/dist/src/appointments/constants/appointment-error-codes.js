@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TooMuchReschedules = exports.AppointmentNotFound = exports.CannotRescheduleToSameDate = exports.RescheduleAttemptIsLate = exports.YourAreNotAllowedToReschedule = exports.NoReschedullableAppointment = exports.YourAreNotAllowedToCancell = exports.NoCancellableAppointment = exports.MinorNoLongerUnderaged = exports.MinorDoesNotExist = exports.TravelAppointmentsNeedsPasport = exports.OnlyOneAppointmentPerDayPerClient = exports.BankDepositMustPayOneDayBefore = exports.TimeMarginExceeded = exports.CutOffTimeExceeded = exports.NoAvailablePlaces = exports.WrongTimeOfDay = exports.NotWorkableDay = void 0;
+exports.NotWorkableDay = 'NotWorkableDay';
+exports.WrongTimeOfDay = 'WrongTimeOfDay';
+exports.NoAvailablePlaces = 'NoAvailablePlaces';
+exports.CutOffTimeExceeded = 'CutOffTimeExceeded';
+exports.TimeMarginExceeded = 'TimeMarginExceeded';
+exports.BankDepositMustPayOneDayBefore = 'BankDepositMustPayOneDayBefore';
+exports.OnlyOneAppointmentPerDayPerClient = 'OnlyOneAppointmentPerDayPerClient';
+exports.TravelAppointmentsNeedsPasport = 'TravelAppointmentsNeedsPasport';
+exports.MinorDoesNotExist = 'MinorDoesNotExist';
+exports.MinorNoLongerUnderaged = 'MinorNoLongerUnderaged';
+exports.NoCancellableAppointment = 'NoCancellableAppointment';
+exports.YourAreNotAllowedToCancell = 'YourAreNotAllowedToCancell';
+exports.NoReschedullableAppointment = 'NoReschedullableAppointment';
+exports.YourAreNotAllowedToReschedule = 'YourAreNotAllowedToReschedule';
+exports.RescheduleAttemptIsLate = 'RescheduleAttemptIsLate';
+exports.CannotRescheduleToSameDate = 'CannotRescheduleToSameDate';
+exports.AppointmentNotFound = 'AppointmentNotFound';
+exports.TooMuchReschedules = 'TooMuchReschedules';
+//# sourceMappingURL=appointment-error-codes.js.map
