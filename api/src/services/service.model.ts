@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { ActiveService } from "./active-services/active-service.model";
 
 export enum ServiceType {
   Immediate = "Immediate",
@@ -26,4 +27,7 @@ export class Service extends Model<IService> implements IService {
 
   @Column({ allowNull: false })
   serviceType: ServiceType;
+
+  @HasMany(() => ActiveService)
+  activeServices: ActiveService[];
 }
