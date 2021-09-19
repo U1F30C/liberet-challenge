@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { ModelCtor } from "sequelize-typescript";
+import { Service } from "src/services/service.model";
 import { Log } from "./log.model";
 
 @Injectable()
@@ -25,6 +26,9 @@ export class LogsService {
   }
 
   getUserLogs(userId: string) {
-    return this.logModel.findAll({ where: { userId } });
+    return this.logModel.findAll({
+      where: { userId },
+      include: { model: Service },
+    });
   }
 }
