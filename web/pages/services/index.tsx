@@ -57,19 +57,23 @@ export default class ServicesList extends React.Component<
     return (
       <Container className="md-container">
         <Container>
+          <Row className="justify-content-md-between">
+            <div />
+            <h2></h2>
+            <Button
+              variant="success"
+              onClick={() => this.setState({ showModal: true })}
+            >
+              Créditos: {this.state.credits}
+            </Button>
+          </Row>
           <h1>Servicios</h1>
-          <h2>Créditos:{this.state.credits}</h2>
           <RechargeModal
             show={this.state.showModal}
             onCancel={this.onCloseModal}
             onSave={this.onRecharge}
           />
-          <Button
-            variant="success"
-            onClick={() => this.setState({ showModal: true })}
-          >
-            Recargar créditos
-          </Button>
+
           <Container>
             <Row className="justify-content-md-between">
               {this.state.services.map((service) => {
