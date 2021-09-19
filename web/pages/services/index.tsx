@@ -8,7 +8,7 @@ import { servicesService } from "../../services/services.service";
 import { walletService } from "../../services/wallet-service";
 
 export default class ServicesList extends React.Component<
-  null,
+  any,
   { services: Service[]; credits: string; showModal: boolean }
 > {
   constructor(props) {
