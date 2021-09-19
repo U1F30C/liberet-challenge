@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import { Container, Row, Card, Button } from "react-bootstrap";
+import { AppNavbar } from "../../components/navbar";
 import { RechargeModal } from "../../components/recharge-modal";
 import { Service } from "../../models/service";
 import { servicesService } from "../../services/services.service";
@@ -55,74 +56,77 @@ export default class ServicesList extends React.Component<
 
   render() {
     return (
-      <Container className="md-container">
-        <Container>
-          <Row className="justify-content-md-between">
-            <div />
-            <h2></h2>
-            <Button
-              variant="success"
-              onClick={() => this.setState({ showModal: true })}
-            >
-              Créditos: {this.state.credits}
-            </Button>
-          </Row>
-          <h1>Servicios</h1>
-          <RechargeModal
-            show={this.state.showModal}
-            onCancel={this.onCloseModal}
-            onSave={this.onRecharge}
-          />
-
+      <>
+        <AppNavbar />
+        <Container className="md-container">
           <Container>
             <Row className="justify-content-md-between">
-              {this.state.services.map((service) => {
-                const isConsumable = service.serviceType == "Immediate";
-
-                const isStartable = !service.activeServices[0];
-                const isPayable =
-                  parseFloat(service.cost) <= parseFloat(this.state.credits);
-
-                return (
-                  <>
-                    <Card className="sml-card">
-                      <Card.Body>
-                        <Card.Title>{service.name}</Card.Title>
-                        <Card.Text>
-                          Costo: {service.cost}{" "}
-                          {isConsumable ? "" : " por minuto"}
-                        </Card.Text>
-                        <Button
-                          variant="primary"
-                          onClick={() => this.doAction(service)}
-                          disabled={isConsumable && !isPayable}
-                        >
-                          {isConsumable
-                            ? "Usar servicio"
-                            : isStartable
-                            ? "Activar servicio"
-                            : "Detener servicio"}
-                        </Button>
-                      </Card.Body>
-                    </Card>
-                  </>
-                );
-              })}
+              <div />
+              <h2></h2>
+              <Button
+                variant="success"
+                onClick={() => this.setState({ showModal: true })}
+              >
+                Créditos: {this.state.credits}
+              </Button>
             </Row>
-          </Container>
-        </Container>
+            <h1>Servicios</h1>
+            <RechargeModal
+              show={this.state.showModal}
+              onCancel={this.onCloseModal}
+              onSave={this.onRecharge}
+            />
 
-        <footer className="cntr-footer">
-          <a
-            href="https://vercel.com?filter=next.js&utm_source=github&utm_medium=example&utm_campaign=next-example"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by{" "}
-            <img src="/vercel.svg" alt="Vercel Logo" className="sml-logo" />
-          </a>
-        </footer>
-      </Container>
+            <Container>
+              <Row className="justify-content-md-between">
+                {this.state.services.map((service) => {
+                  const isConsumable = service.serviceType == "Immediate";
+
+                  const isStartable = !service.activeServices[0];
+                  const isPayable =
+                    parseFloat(service.cost) <= parseFloat(this.state.credits);
+
+                  return (
+                    <>
+                      <Card className="sml-card">
+                        <Card.Body>
+                          <Card.Title>{service.name}</Card.Title>
+                          <Card.Text>
+                            Costo: {service.cost}{" "}
+                            {isConsumable ? "" : " por minuto"}
+                          </Card.Text>
+                          <Button
+                            variant="primary"
+                            onClick={() => this.doAction(service)}
+                            disabled={isConsumable && !isPayable}
+                          >
+                            {isConsumable
+                              ? "Usar servicio"
+                              : isStartable
+                              ? "Activar servicio"
+                              : "Detener servicio"}
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                    </>
+                  );
+                })}
+              </Row>
+            </Container>
+          </Container>
+
+          <footer className="cntr-footer">
+            <a
+              href="https://vercel.com?filter=next.js&utm_source=github&utm_medium=example&utm_campaign=next-example"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Powered by{" "}
+              <img src="/vercel.svg" alt="Vercel Logo" className="sml-logo" />
+            </a>
+          </footer>
+        </Container>
+      </>
     );
   }
 }
