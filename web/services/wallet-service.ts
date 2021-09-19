@@ -14,10 +14,10 @@ export class WalletService {
     return this.getWallet().then((response) => response.credits);
   }
 
-  async rechargeCredits() {
+  async rechargeCredits(amount: string) {
     const userId = await identityService.getCurrentUserId();
     return httpClient
-      .post<Wallet>(`wallet/${userId}/recharge`)
+      .post<Wallet>(`wallet/${userId}/recharge`, { amount: amount })
       .then((response) => response.data);
   }
 }
