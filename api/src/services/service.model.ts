@@ -15,7 +15,7 @@ export interface IService {
 @Table({
   modelName: "service",
 })
-export class Service extends Model<Service> implements IService {
+export class Service extends Model<IService> implements IService {
   @Column({ primaryKey: true, autoIncrement: true })
   id: string;
 

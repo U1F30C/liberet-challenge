@@ -6,7 +6,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { User } from "src/users/models/user.model";
+import { User } from "../users/models/user.model";
 
 export interface IWallet {
   userId: string;

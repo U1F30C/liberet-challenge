@@ -1,6 +1,6 @@
 import { Column, HasMany, HasOne, Model, Table } from "sequelize-typescript";
-import { Log } from "src/logs/log.model";
-import { Wallet } from "src/wallet/wallet.model";
+import { Log } from "../../logs/log.model";
+import { Wallet } from "../../wallet/wallet.model";
 
 export interface IUser {
   id: number;
