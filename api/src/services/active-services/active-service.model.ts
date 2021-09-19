@@ -2,8 +2,8 @@ import {
   BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   Model,
-  NotNull,
   Table,
 } from "sequelize-typescript";
 import { Service } from "src/services/service.model";
@@ -21,14 +21,13 @@ export interface IActiveService {
 export class ActiveService
   extends Model<IActiveService>
   implements IActiveService {
-  @Column
-  @NotNull
+  @Column({ allowNull: false })
+  @ForeignKey(() => User)
   userId: string;
-  @Column
-  @NotNull
+  @Column({ allowNull: false })
+  @ForeignKey(() => Service)
   serviceId: string;
-  @Column({ type: DataType.DECIMAL })
-  @NotNull
+  @Column({ type: DataType.DECIMAL, allowNull: false })
   accumulatedCost: string;
 
   @BelongsTo(() => User)

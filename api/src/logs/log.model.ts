@@ -2,8 +2,8 @@ import {
   BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   Model,
-  NotNull,
   Table,
 } from "sequelize-typescript";
 import { Service } from "src/services/service.model";
@@ -20,17 +20,15 @@ export interface ILog {
   modelName: "log",
 })
 export class Log extends Model<ILog> implements ILog {
-  @Column
-  @NotNull
+  @Column({ allowNull: false })
+  @ForeignKey(() => User)
   userId: string;
-  @Column
-  @NotNull
+  @Column({ allowNull: false })
+  @ForeignKey(() => Service)
   serviceId: string;
-  @Column
-  @NotNull
+  @Column({ allowNull: false })
   operation: string;
-  @Column({ type: DataType.DECIMAL })
-  @NotNull
+  @Column({ type: DataType.DECIMAL, allowNull: false })
   cost: string;
 
   @BelongsTo(() => User)

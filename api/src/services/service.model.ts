@@ -1,4 +1,4 @@
-import { Column, DataType, Model, NotNull, Table } from "sequelize-typescript";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 export enum ServiceType {
   Immediate = "Immediate",
@@ -18,13 +18,12 @@ export interface IService {
 export class Service extends Model<Service> implements IService {
   @Column({ primaryKey: true, autoIncrement: true })
   id: string;
-  @Column
-  @NotNull
+
+  @Column({ allowNull: false })
   name: string;
-  @Column({ type: DataType.DECIMAL })
-  @NotNull
+  @Column({ type: DataType.DECIMAL, allowNull: false })
   cost: string;
-  @Column
-  @NotNull
+
+  @Column({ allowNull: false })
   serviceType: ServiceType;
 }

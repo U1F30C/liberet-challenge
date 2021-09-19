@@ -2,8 +2,8 @@ import {
   BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   Model,
-  NotNull,
   Table,
 } from "sequelize-typescript";
 import { User } from "src/users/models/user.model";
@@ -18,11 +18,11 @@ export interface IWallet {
 })
 export class Wallet extends Model<IWallet> implements IWallet {
   @Column({ primaryKey: true, autoIncrement: true })
-  @NotNull
+  @ForeignKey(() => User)
   userId: string;
-  @Column({ type: DataType.DECIMAL })
-  @NotNull
+  @Column({ type: DataType.DECIMAL, allowNull: false })
   credits: string;
-  @BelongsTo(() => User)
+
+  @BelongsTo(() => User, "userId")
   user: User;
 }
