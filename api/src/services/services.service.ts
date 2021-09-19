@@ -37,7 +37,7 @@ export class ServicesService {
 
       const wallet = await this.walletService.getOrCreateWallet(userId);
 
-      if (wallet.credits <= activeService.service.cost) {
+      if (parseFloat(wallet.credits) < parseFloat(activeService.service.cost)) {
         await this.activeServicesService.stop(userId, activeService.serviceId);
       } else {
         // do something with activeService
