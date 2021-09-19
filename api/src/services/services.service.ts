@@ -10,6 +10,7 @@ import { User } from "src/users/models/user.model";
 import { UsersService } from "src/users/users.service";
 import { Wallet } from "src/wallet/wallet.model";
 import { WalletService } from "src/wallet/wallet.service";
+import { ActiveServicesService } from "./active-services/active-services.service";
 import { Service } from "./service.model";
 
 @Injectable()
@@ -21,7 +22,8 @@ export class ServicesService {
     private userModel: ModelCtor<User>,
     private walletService: WalletService,
     private logsService: LogsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private activeServicesService: ActiveServicesService
   ) {}
 
   getAll() {
@@ -57,21 +59,31 @@ export class ServicesService {
   }
 
   async stopService(userId: string, serviceId: string) {
-
     const service = await this.getServiceOrFail(serviceId);
     const user = await this.usersService.getOrFail(
       userId,
       (options) => (options.include = { model: Wallet })
     );
-    // const activeService =  this.activeServicesService.getOrFail(userId, serviceId);
-    // await this.logsService.createLog(
-    //   userId,
-    //   serviceId,
-    //   "Stop",
-    //   service.cost
-    // );
+    const activeService = await this.activeServicesService.getOrFail(
+      userId,
+      serviceId
+    );
+    await this.activeServicesService.stop(userId, serviceId);
+    await this.logsService.createLog(
+      userId,
+      serviceId,
+      "Stop",
+      activeService.accumulatedCost
+    );
   }
 
-  startService(userId: string, serviceId: string) {
+  async startService(userId: string, serviceId: string) {
+    const service = await this.getServiceOrFail(serviceId);
+    const user = await this.usersService.getOrFail(
+      userId,
+      (options) => (options.include = { model: Wallet })
+    );
+    await this.activeServicesService.start(userId, serviceId);
+    await this.logsService.createLog(userId, serviceId, "Start");
   }
 }
