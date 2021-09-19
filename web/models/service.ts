@@ -4,6 +4,7 @@ export enum ServiceType {
 }
 
 export interface Service {
+  activeServices: { userId: string; serviceId: string }[];
   id: string;
   name: string;
   cost: string;
