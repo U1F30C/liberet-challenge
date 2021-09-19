@@ -1,17 +1,20 @@
 import Head from "next/head";
 import React from "react";
 import { Container, Row, Card, Button } from "react-bootstrap";
+import { RechargeModal } from "../../components/recharge-modal";
 import { Service } from "../../models/service";
 import { servicesService } from "../../services/services.service";
 import { walletService } from "../../services/wallet-service";
 
 export default class ServicesList extends React.Component<
   null,
-  { services: Service[]; credits: string }
+  { services: Service[]; credits: string; showModal: boolean }
 > {
   constructor(props) {
     super(props);
-    this.state = { services: [], credits: "0" };
+    this.state = { services: [], credits: "0", showModal: false };
+    this.onRecharge = this.onRecharge.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
   }
   async fetchData() {
     const services = await servicesService.getAllServices();
@@ -36,21 +39,45 @@ export default class ServicesList extends React.Component<
         await servicesService.stopService(service.id);
       }
     }
-    this.fetchData();
+    await this.fetchData();
   }
+
+  onCloseModal() {
+    this.setState({ showModal: false });
+  }
+
+  async onRecharge(amount: string) {
+    await walletService.rechargeCredits(amount);
+
+    this.setState({ showModal: false });
+    await this.fetchData();
+  }
+
   render() {
     return (
       <Container className="md-container">
         <Container>
           <h1>Servicios</h1>
           <h2>Créditos:{this.state.credits}</h2>
+          <RechargeModal
+            show={this.state.showModal}
+            onCancel={this.onCloseModal}
+            onSave={this.onRecharge}
+          />
+          <Button
+            variant="success"
+            onClick={() => this.setState({ showModal: true })}
+          >
+            Recargar créditos
+          </Button>
           <Container>
             <Row className="justify-content-md-between">
               {this.state.services.map((service) => {
                 const isConsumable = service.serviceType == "Immediate";
 
                 const isStartable = !service.activeServices[0];
-                const isPayable = service.cost <= this.state.credits;
+                const isPayable =
+                  parseFloat(service.cost) <= parseFloat(this.state.credits);
 
                 return (
                   <>
