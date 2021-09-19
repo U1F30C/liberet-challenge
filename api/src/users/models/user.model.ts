@@ -1,4 +1,6 @@
-import { Column, Model, Table } from "sequelize-typescript";
+import { Column, HasMany, HasOne, Model, Table } from "sequelize-typescript";
+import { Log } from "src/logs/log.model";
+import { Wallet } from "src/wallet/wallet.model";
 
 export interface IUser {
   id: number;
@@ -19,4 +21,8 @@ export class User extends Model<User> implements IUser {
   lastName: string;
   @Column({ unique: true })
   email: string;
+  @HasOne(() => Wallet)
+  wallet: Wallet;
+  @HasMany(() => Log)
+  logs: Log[];
 }
