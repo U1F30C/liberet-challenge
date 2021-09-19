@@ -21,10 +21,10 @@ export interface IActiveService {
 export class ActiveService
   extends Model<IActiveService>
   implements IActiveService {
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, primaryKey: true })
   @ForeignKey(() => User)
   userId: string;
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, primaryKey: true })
   @ForeignKey(() => Service)
   serviceId: string;
   @Column({ type: DataType.DECIMAL, allowNull: false })

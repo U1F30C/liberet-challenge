@@ -23,10 +23,10 @@ export class Log extends Model<ILog> implements ILog {
   @Column({ allowNull: false })
   @ForeignKey(() => User)
   userId: string;
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, primaryKey: true })
   @ForeignKey(() => Service)
   serviceId: string;
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, primaryKey: true })
   operation: string;
   @Column({ type: DataType.DECIMAL, allowNull: false })
   cost: string;
