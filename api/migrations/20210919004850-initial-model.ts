@@ -14,6 +14,7 @@ module.exports = {
         primaryKey: true,
         type: Types.BIGINT,
         allowNull: false,
+        autoIncrement: true,
       },
       name: {
         type: Types.STRING,
@@ -43,7 +44,12 @@ module.exports = {
       ...timestamps(Types),
     });
     await queryInterface.createTable("services", {
-      id: { primaryKey: true, type: Types.BIGINT },
+      id: {
+        primaryKey: true,
+        type: Types.BIGINT,
+        autoIncrement: true,
+        allowNull: false,
+      },
       name: { type: Types.STRING, allowNull: false },
       cost: { type: Types.DECIMAL, allowNull: false },
       serviceType: { type: Types.STRING, allowNull: false },
@@ -88,5 +94,11 @@ module.exports = {
       ...timestamps(Types),
     });
   },
-  down: async (queryInterface: QueryInterface, Types: typeof DataTypes) => {},
+  down: async (queryInterface: QueryInterface, Types: typeof DataTypes) => {
+    await queryInterface.dropTable("logs");
+    await queryInterface.dropTable("activeServices");
+    await queryInterface.dropTable("wallets");
+    await queryInterface.dropTable("services");
+    await queryInterface.dropTable("users");
+  },
 };
