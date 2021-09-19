@@ -6,8 +6,8 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Service } from "src/services/service.model";
-import { User } from "src/users/models/user.model";
+import { Service } from "../../services/service.model";
+import { User } from "../../users/models/user.model";
 
 export interface IActiveService {
   userId: string;
