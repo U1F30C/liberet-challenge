@@ -3,9 +3,10 @@ import { httpClient } from "./http";
 import { identityService } from "./identity-service";
 
 export class ServicesService {
-  getAllServices() {
+  async getAllServices() {
+    const userId = await identityService.getCurrentUserId();
     return httpClient
-      .get<Service[]>("services")
+      .get<Service[]>(`services/active/${userId}`)
       .then((response) => response.data);
   }
 
