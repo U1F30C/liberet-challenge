@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
+import { Cron } from "@nestjs/schedule";
 import { InjectModel } from "@nestjs/sequelize";
 import { ModelCtor } from "sequelize-typescript";
 import { LogsService } from "src/logs/logs.service";
@@ -26,6 +27,22 @@ export class ServicesService {
     private usersService: UsersService,
     private activeServicesService: ActiveServicesService
   ) {}
+
+  @Cron("0 * * * * *")
+  async runServices() {
+    console.log("Running active services")
+    const activeServices = await this.activeServicesService.findAllRunning();
+    for (const activeService of activeServices) {
+      // do something whith activeService
+      await activeService.increment({
+        accumulatedCost: activeService.service.cost,
+      });
+      await this.walletService.decrease(
+        activeService.userId,
+        activeService.service.cost
+      );
+    }
+  }
 
   getAllWithStatusForUser(userId: string) {
     return this.serviceModel.findAll({

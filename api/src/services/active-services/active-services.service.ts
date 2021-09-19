@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { ModelCtor } from "sequelize-typescript";
+import { Service } from "../service.model";
 import { ActiveService } from "./active-service.model";
 
 @Injectable()
@@ -13,6 +14,11 @@ export class ActiveServicesService {
     @InjectModel(ActiveService)
     private activeServiceModel: ModelCtor<ActiveService>
   ) {}
+
+  findAllRunning() {
+    return this.activeServiceModel.findAll({ include: { model: Service } });
+  }
+
   async getOrFail(userId: string, serviceId: string) {
     const activeService = await this.activeServiceModel.findOne({
       where: { userId, serviceId },
