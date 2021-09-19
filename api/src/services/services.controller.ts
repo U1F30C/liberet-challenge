@@ -8,6 +8,10 @@ export class ServicesController {
   getAll() {
     return this.servicesService.getAll();
   }
+  @Get("active/:userId(\\d+)")
+  getAllWithStatusForUser(@Param("userId") userId: string) {
+    return this.servicesService.getAllWithStatusForUser(userId);
+  }
 
   @Post(":serviceId(\\d+)/consume/:userId(\\d+)")
   useService(
