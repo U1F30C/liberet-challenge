@@ -1,20 +1,21 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { FindOptions } from "sequelize";
 import { User } from "./models/user.model";
-
-const dataToUpdate = [
-  "name",
-  "lastName",
-  "mothersLastName",
-  "email",
-  "role",
-  "active",
-];
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User)
-    userModel: typeof User
+    private userModel: typeof User
   ) {}
+  async getOrFail(userId: string, customize: { (options: FindOptions): void }) {
+    const options = {};
+    customize(options);
+    const user = await this.userModel.findByPk(userId, options);
+    if (!user) {
+      throw new NotFoundException("UserNotFound");
+    }
+    return user;
+  }
 }

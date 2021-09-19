@@ -6,6 +6,9 @@ import { AppService } from "./app.service";
 import { UsersModule } from "./users/users.module";
 import { ServicesController } from './services/services.controller';
 import { WalletController } from './wallet/wallet.controller';
+import { ServicesService } from './services/services.service';
+import { WalletService } from './wallet/wallet.service';
+import { LogsService } from './logs/logs.service';
 
 const options: SequelizeModuleOptions = dbConfig;
 
@@ -19,7 +22,7 @@ const options: SequelizeModuleOptions = dbConfig;
     }),
     UsersModule,
   ],
-  providers: [AppService],
+  providers: [AppService, ServicesService, WalletService, LogsService],
   controllers: [ServicesController, WalletController],
 })
 export class AppModule {}
