@@ -10,6 +10,7 @@ import { User } from "src/users/models/user.model";
 import { UsersService } from "src/users/users.service";
 import { Wallet } from "src/wallet/wallet.model";
 import { WalletService } from "src/wallet/wallet.service";
+import { ActiveService } from "./active-services/active-service.model";
 import { ActiveServicesService } from "./active-services/active-services.service";
 import { Service } from "./service.model";
 
@@ -26,14 +27,18 @@ export class ServicesService {
     private activeServicesService: ActiveServicesService
   ) {}
 
+  getAllWithStatusForUser(userId: string) {
+    return this.serviceModel.findAll({
+      include: { model: ActiveService, required: false, where: { userId } },
+    });
+  }
+
   getAll() {
     return this.serviceModel.findAll();
   }
 
   async getServiceOrFail(serviceId: string) {
-    const service = await this.serviceModel.findByPk(serviceId, {
-      include: { model: Wallet },
-    });
+    const service = await this.serviceModel.findByPk(serviceId);
     if (!service) {
       throw new NotFoundException("ServiceNotFound");
     }
