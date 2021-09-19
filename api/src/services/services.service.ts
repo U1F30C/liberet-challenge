@@ -30,17 +30,22 @@ export class ServicesService {
 
   @Cron("0 * * * * *")
   async runServices() {
-    console.log("Running active services")
+    console.log("Running active services");
     const activeServices = await this.activeServicesService.findAllRunning();
     for (const activeService of activeServices) {
-      // do something whith activeService
-      await activeService.increment({
-        accumulatedCost: activeService.service.cost,
-      });
-      await this.walletService.decrease(
-        activeService.userId,
-        activeService.service.cost
-      );
+      const userId = activeService.userId;
+
+      const wallet = await this.walletService.getOrCreateWallet(userId);
+
+      if (wallet.credits <= activeService.service.cost) {
+        await this.activeServicesService.stop(userId, activeService.serviceId);
+      } else {
+        // do something with activeService
+        await activeService.increment({
+          accumulatedCost: activeService.service.cost,
+        });
+        await this.walletService.decrease(userId, activeService.service.cost);
+      }
     }
   }
 
