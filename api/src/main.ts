@@ -13,8 +13,8 @@ async function bootstrap() {
   app.use(cors());
   app.use(cookieParser());
   const docsOptions = new DocumentBuilder()
-    .setTitle('Ladim')
-    .setDescription('The Ladim API description')
+    .setTitle('Liberet Challenge')
+    .setDescription('API description')
     .setVersion('1.0')
     .build();
   app.useGlobalPipes(
